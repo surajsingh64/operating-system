@@ -1,0 +1,20 @@
+#include <iostream>      // For cout, cerr
+#include <unistd.h>      // For fork(), getpid()
+#include <sys/types.h>   // For pid_t
+
+using namespace std;
+
+int main() {
+    pid_t pid = fork();  // Create a new process
+
+    if (pid < 0) {
+        // Fork failed
+        cerr << "Fork failed!" << endl;
+        return 1;
+    }
+
+    // Both parent and child execute this
+    cout << "Hello from process with PID: " << getpid() << endl;
+
+    return 0;
+}
