@@ -1,0 +1,30 @@
+#include <iostream>      // for cout, cerr
+#include <unistd.h>      // for fork(), getpid(), sleep()
+#include <sys/types.h>   // for pid_t
+#include <sys/wait.h>    // for wait()
+
+using namespace std;
+
+int main() {
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        // Fork failed
+        cerr << "Fork failed!" << endl;
+        return 1;
+    } 
+    else if (pid == 0) {
+        // Child process
+        cout << "Child process started. PID: " << getpid() << endl;
+        sleep(2);  // Simulate some work
+        cout << "Child process finished." << endl;
+    } 
+    else {
+        // Parent process
+        cout << "Parent process waiting for child to finish..." << endl;
+        wait(NULL);  // Wait for child to complete
+        cout << "Parent process resumes after child is done." << endl;
+    }
+
+    return 0;
+}
