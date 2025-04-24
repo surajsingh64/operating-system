@@ -3,7 +3,7 @@ using namespace std;
 
 void firstFit(int blockSize[], int m, int processSize[], int n) {
     int allocation[n];
-    fill_n(allocation, n, -1); // Initialize all allocations to -1 (unallocated)
+    fill_n(allocation, n, -1);  // Initialize all allocations to -1 (unallocated)
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
@@ -23,7 +23,7 @@ void firstFit(int blockSize[], int m, int processSize[], int n) {
             cout << allocation[i] + 1;
         else
             cout << "Not Allocated";
-        cout << endl;
+        cout << "\n";
     }
 }
 
@@ -54,7 +54,7 @@ void bestFit(int blockSize[], int m, int processSize[], int n) {
             cout << allocation[i] + 1;
         else
             cout << "Not Allocated";
-        cout << endl;
+        cout << "\n";
     }
 }
 
@@ -85,7 +85,7 @@ void worstFit(int blockSize[], int m, int processSize[], int n) {
             cout << allocation[i] + 1;
         else
             cout << "Not Allocated";
-        cout << endl;
+        cout << "\n";
     }
 }
 
@@ -93,24 +93,32 @@ int main() {
     int m, n;
     cout << "Enter number of memory blocks: ";
     cin >> m;
-    int blockSize[m], blockSize1[m], blockSize2[m];
+    int blockSize[m], originalBlocks[m];
+
     cout << "Enter sizes of memory blocks:\n";
     for (int i = 0; i < m; i++) {
         cin >> blockSize[i];
-        blockSize1[i] = blockSize2[i] = blockSize[i]; // copies for reuse
+        originalBlocks[i] = blockSize[i];  // Save original for reuse
     }
 
     cout << "Enter number of processes: ";
     cin >> n;
     int processSize[n];
+
     cout << "Enter sizes of processes:\n";
     for (int i = 0; i < n; i++) {
         cin >> processSize[i];
     }
 
+    // First Fit
     firstFit(blockSize, m, processSize, n);
-    bestFit(blockSize1, m, processSize, n);
-    worstFit(blockSize2, m, processSize, n);
+
+    // Restore original blocks for next strategy
+    copy(originalBlocks, originalBlocks + m, blockSize);
+    bestFit(blockSize, m, processSize, n);
+
+    copy(originalBlocks, originalBlocks + m, blockSize);
+    worstFit(blockSize, m, processSize, n);
 
     return 0;
 }
